@@ -3,15 +3,21 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
-    useParams
+    // Link,
+    // useParams
 } from 'react-router-dom';
+import Header from './Header.js';
+import './css/main.css';
 
 export default class App extends React.Component
 {
     render() {
         return (
-            <h1>Hola mundo!</h1>
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={Header} />
+                </Switch>
+            </Router>
         );
     }
 }
