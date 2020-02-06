@@ -7,6 +7,8 @@ import {
     // useParams
 } from 'react-router-dom';
 import Header from './Header.js';
+import Body from './Body.js';
+// css files
 import './css/main.css';
 
 export default class App extends React.Component
@@ -15,7 +17,10 @@ export default class App extends React.Component
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" component={Header} />
+                    <Route exact path="/">
+                        <Header></Header>
+                        <Body></Body>
+                    </Route>
                 </Switch>
             </Router>
         );
