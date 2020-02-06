@@ -5,3 +5,50 @@
     margin: 25px;
     border-radius: 1.5%;
 }
+
+.cols {
+    display: flex;
+    justify-content: center;
+}
+
+.poke_card { width: 75% }
+.poke_card:hover { cursor: pointer }
+
+.poke_card .image {
+    display: flex;
+    justify-content: center;
+}
+
+.poke_card .information {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #000;
+}
+
+.poke_card .information .id {
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.poke_card .information .name {
+    font-size: 1.75em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.poke_card .information .types {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.poke_card .information .types .type-cont {
+    display: inline-block;
+    width: 35%;
+    margin: 0 10px;
+    text-align: center;
+
+    background-color: #000;
+    color: #fff;
+    border-radius: 6px;
+}

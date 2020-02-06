@@ -3,6 +3,8 @@ import React from 'react';
 // css files
 import './css/body.css';
 import 'bootstrap/dist/css/bootstrap.css';
+// js files
+import { capitalizeWord, getAPIData } from './js/functions.js';
 
 export default class Body extends React.Component
 {
@@ -13,7 +15,7 @@ export default class Body extends React.Component
             pokemons: this.pokemons
         }
 
-        this.BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=48&offset=0';
+        this.BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=100&offset=0';
         this.POKE_IMAGES_URL = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/';
     }
 
@@ -37,10 +39,7 @@ export default class Body extends React.Component
     async getPokemons(url) {
         let pokemons = [];
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(response.statusText);
-            const json = await response.json();
-
+            const json = await getAPIData(url);
             for (let i = 0; i < json.results.length; i++) {
                 const result = json.results[i];
                 const info = await this.getInfoPokemon(result.url);
@@ -54,15 +53,15 @@ export default class Body extends React.Component
 
     async getInfoPokemon(pokemon_url) {
         try {
-            const response = await fetch(pokemon_url);
-            if (!response.ok) throw new Error(response.statusText);
-            const json = await response.json();
+            const json = await getAPIData(pokemon_url);
             const _id = json.id.toString();
             const id = _id.length === 1 ? `00${_id}` : _id.length === 2 ? `0${_id}` : _id;
+            let types = json.types.map(type => type.type.name);
             return {
-                name: json.name.charAt(0).toUpperCase() + json.name.slice(1),
+                name: capitalizeWord(json.name),
                 image: this.POKE_IMAGES_URL + `${id}.png`,
                 id: id,
+                types: types.reverse(),
             };
         } catch (error) {
             console.log(error);
@@ -72,12 +71,13 @@ export default class Body extends React.Component
     getPokemonList(pokemons) {
         let _pokemons = pokemons.slice(),
             list = [];
-        const limit = parseInt(pokemons.length / 3);
+        const poke_x_row = 4;
+        const limit = Math.ceil(pokemons.length / poke_x_row);
         for (let i = 0; i < limit; i++) {
             let cols = [];
-            for (let j = 0; j < 3; j++) {
-                if (!_pokemons.length) break;
+            for (let j = 0; j < poke_x_row; j++) {
                 const pokemon = _pokemons[j];
+                if (_pokemons.length < poke_x_row && j === poke_x_row) break;
                 cols.push(
                     <PokemonCard
                         key={pokemon.id}
@@ -86,17 +86,29 @@ export default class Body extends React.Component
             }
             const row = <div key={i} className="row">{cols}</div>
             list.push(row);
-            _pokemons = _pokemons.slice(3);
+            _pokemons = _pokemons.slice(poke_x_row);
         }
         return list;
     }
 }
 
-function PokemonCard({pokemon_info}) {
+function PokemonCard({ pokemon_info}) {
     return (
-        <div className="col-sm-4">
-            <div className="image"><img src={pokemon_info.image} alt={pokemon_info.name} /></div>
-            <div className="name">{pokemon_info.name}</div>
+        <div className="cols col-sm-3">
+            <div className="poke_card">
+                <div className="image">
+                    <img src={pokemon_info.image} alt={pokemon_info.name} /><br/>
+                </div>
+                <div className="information">
+                    <span className="id">N° {pokemon_info.id}</span>
+                    <div className="name">{pokemon_info.name}</div>
+                    <div className="types">
+                        {pokemon_info.types.map(type => 
+                            <div className={`type-cont ${type}`} key={type}>{type}</div>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
