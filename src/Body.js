@@ -27,7 +27,7 @@ export default class Body extends React.Component
         );
     }
 
-    async componentDidMount() {
+    async UNSAFE_componentWillMount() {
         const pokemons = await this.getPokemons(this.BASE_URL);
         this.pokemons = pokemons;
         const html_poke = this.getPokemonList(pokemons);
