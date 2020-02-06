@@ -1,0 +1,8 @@
+.body { width: 100% }
+
+.bg-pokemons-cards {
+    background-color: rgba(250, 250, 250, 0.8);
+    margin: 25px;
+    border-radius: 1.5%;
+    height: 1000px;
+}

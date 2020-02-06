@@ -7,9 +7,11 @@ export default class Body extends React.Component
 {
     render () {
         return (
-            <div className="body">
-                
-            </div>
+            <main>
+                <div className="bg-pokemons-cards">
+                    
+                </div>
+            </main>
         );
     }
 }
