@@ -12,7 +12,9 @@ export default class Body extends React.Component
         this.state = {
             pokemons: this.pokemons
         }
+
         this.BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=48&offset=0';
+        this.POKE_IMAGES_URL = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/';
     }
 
     render () {
@@ -55,9 +57,12 @@ export default class Body extends React.Component
             const response = await fetch(pokemon_url);
             if (!response.ok) throw new Error(response.statusText);
             const json = await response.json();
+            const _id = json.id.toString();
+            const id = _id.length === 1 ? `00${_id}` : _id.length === 2 ? `0${_id}` : _id;
             return {
                 name: json.name.charAt(0).toUpperCase() + json.name.slice(1),
-                image: json.sprites.front_default,
+                image: this.POKE_IMAGES_URL + `${id}.png`,
+                id: id,
             };
         } catch (error) {
             console.log(error);
@@ -75,7 +80,7 @@ export default class Body extends React.Component
                 const pokemon = _pokemons[j];
                 cols.push(
                     <PokemonCard
-                        key={pokemon.name}
+                        key={pokemon.id}
                         pokemon_info={pokemon} />
                 );
             }
