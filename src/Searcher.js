@@ -9,14 +9,10 @@ export default class Searcher extends React.Component {
     }
 
     handleKeyUp(e) {
-        //Execute function to search pokemons
-    }
-
-    handleKeyDown(e) {
-        if (this.timeOut) {
-            clearTimeout(this.timeOut);
-            delete this.timeOut;
-        }
+        this.timeOut = setTimeout(() => {
+            this.props.onQueryStringChange(this.state.inputText);
+            this.clearTimeOut();
+        }, 100);
     }
 
     render() {
@@ -28,12 +24,19 @@ export default class Searcher extends React.Component {
                         placeholder="Write your pokemon name!"
                         autoFocus
                         onKeyUp={e => this.handleKeyUp(e)}
-                        onKeyDown={e => this.handleKeyDown(e)}
+                        onKeyDown={() => this.clearTimeOut()}
                         onInput={e => {
                             this.setState({ inputText: e.target.value })
                         }} />
                 </div>
             </div>
         );
+    }
+
+    clearTimeOut() {
+        if (this.timeOut) {
+            clearTimeout(this.timeOut);
+            delete this.timeOut;
+        }
     }
 }

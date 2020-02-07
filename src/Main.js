@@ -11,7 +11,7 @@ export default class Main extends React.Component
         super(props);
         this.state = {
             allPokemons: [],
-            query: null,
+            isSearching: false,
             searchedPokemons: []
         }
 
@@ -19,13 +19,36 @@ export default class Main extends React.Component
         this.POKE_IMAGES_URL = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/';
     }
 
+    handleQueryStringChange(query) {
+        if (!query) {
+            this.setState({ isSearching: false });
+            return;
+        }
+
+        const pokemons = this.state.allPokemons;
+        const searchedPokemons = [];
+        const query_str = query.toLowerCase();
+        pokemons.forEach(pokemon => {
+            const _pokemon = pokemon.name.toLowerCase();
+            if (_pokemon.includes(query_str)) {
+                searchedPokemons.push(pokemon);
+            }
+        });
+        this.setState({
+            isSearching: true,
+            searchedPokemons
+        });
+        console.log(searchedPokemons);
+    }
+
     render() {
-        const { allPokemons, query, searchedPokemons } = this.state;
+        const { allPokemons, isSearching, searchedPokemons } = this.state;
         return (
             <div className="document">
-                <Header></Header>
+                <Header
+                    onQueryStringChange={query => this.handleQueryStringChange(query)}></Header>
                 <Body
-                    pokemons={!query ? allPokemons : searchedPokemons} />
+                    pokemons={!isSearching ? allPokemons : searchedPokemons} />
             </div>
         );
     }

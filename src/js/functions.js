@@ -1,4 +1,4 @@
-export const capitalizeWord = word => word.charAt(0).toUpperCase() + word.slice(1);
+export const capitalizeWord = word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 
 export async function getAPIData(url) {
     const response = await fetch(url);

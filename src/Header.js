@@ -15,7 +15,8 @@ export default function Header(props) {
                     <img src={pokedex} alt="Pokedex text" />
                 </div>
             </div>
-            <Searcher></Searcher>
+            <Searcher
+                onQueryStringChange={query => props.onQueryStringChange(query)}></Searcher>
         </header>
     );
 }
