@@ -1,3 +1,7 @@
+:root {
+    --bg-types: #000;
+}
+
 .body { width: 100% }
 
 .bg-pokemons-cards {
@@ -48,7 +52,10 @@
     margin: 0 10px;
     text-align: center;
 
-    background-color: #000;
+    background-color: var(--bg-types);
     color: #fff;
+    font-weight: bold;
     border-radius: 6px;
+
+    text-shadow: 1.5px 1.5px 1.5px #000000;
 }

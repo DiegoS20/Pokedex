@@ -1,0 +1,23 @@
+.grass { --bg-types: Limegreen; }
+.poison { --bg-types: Mediumpurple; }
+.fire { --bg-types: Crimson; }
+.flying {
+    background: -webkit-linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+    background: -ms-linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+    background: -moz-linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+    background: -o-linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+    background: linear-gradient(180deg, #3dc7ef 50%, #bdb9b8 50%);
+    background-color: #3dc7ef;
+}
+.water { --bg-types: RoyalBlue; }
+.bug { --bg-types: #729f3f; }
+.normal { --bg-types: Gainsboro; }
+.electric { --bg-types: Gold; }
+.fighting { --bg-types: #d56723; }
+.ground { --bg-types: BurlyWood; }
+.fairy { --bg-types: rgb(255, 136, 238); }
+.psychic { --bg-types: Plum; }
+.steel { --bg-types: #9eb7b8; }
+.rock { --bg-types: Peru; }
+.ice { --bg-types: PaleTurquoise; }
+.ghost { --bg-types: Purple; }

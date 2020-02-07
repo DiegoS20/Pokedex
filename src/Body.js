@@ -2,6 +2,7 @@ import React from 'react';
 
 // css files
 import './css/body.css';
+import './css/types_colors.css';
 import 'bootstrap/dist/css/bootstrap.css';
 // js files
 import { capitalizeWord, getAPIData } from './js/functions.js';
@@ -56,7 +57,7 @@ export default class Body extends React.Component
             const json = await getAPIData(pokemon_url);
             const _id = json.id.toString();
             const id = _id.length === 1 ? `00${_id}` : _id.length === 2 ? `0${_id}` : _id;
-            let types = json.types.map(type => type.type.name);
+            let types = json.types.map(type => capitalizeWord(type.type.name));
             return {
                 name: capitalizeWord(json.name),
                 image: this.POKE_IMAGES_URL + `${id}.png`,
@@ -92,7 +93,7 @@ export default class Body extends React.Component
     }
 }
 
-function PokemonCard({ pokemon_info}) {
+function PokemonCard({ pokemon_info }) {
     return (
         <div className="cols col-sm-3">
             <div className="poke_card">
@@ -104,7 +105,9 @@ function PokemonCard({ pokemon_info}) {
                     <div className="name">{pokemon_info.name}</div>
                     <div className="types">
                         {pokemon_info.types.map(type => 
-                            <div className={`type-cont ${type}`} key={type}>{type}</div>
+                            <div
+                                className={`type-cont ${type.toLowerCase()}`}
+                                key={type} >{type}</div>
                         )}
                     </div>
                 </div>
