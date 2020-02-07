@@ -2,7 +2,40 @@
     --bg-types: #000;
 }
 
-.body { width: 100% }
+.loading-pokemons {
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.message {
+    width: 35%;
+    position: relative;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pokeball-icon {
+    display: flex;
+    justify-content: center;
+}
+.pokeball-icon img {
+    width: 50%;
+    -webkit-animation: 1.5s rotate linear infinite;
+    animation: 1.5s rotate linear infinite;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+}
+
+.message .text {
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 2em;
+}
 
 .bg-pokemons-cards {
     background-color: rgba(250, 250, 250, 0.8);
@@ -58,4 +91,16 @@
     border-radius: 6px;
 
     text-shadow: 1.5px 1.5px 1.5px #000000;
+}
+
+
+/* Keyframes */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@-webkit-keyframes rotate {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
 }

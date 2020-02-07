@@ -5,17 +5,44 @@ import './css/body.css';
 import './css/types_colors.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
+import poke_icon from './media/images/pokeball_icon.png';
+
 export default class Body extends React.Component
 {
+    constructor(props) {
+        super(props);
+        this.state = {
+            pokemonsLoaded: false,
+        };
+    }
+
     render () {
         const pokemons = this.getPokemonList(this.props.pokemons);
         return (
             <main>
+                {!this.state.pokemonsLoaded &&
+                    <div className="loading-pokemons">
+                        <div className="message">
+                            <div className="pokeball-icon">
+                                <img src={poke_icon} alt="Pokeball loading icon"/>
+                            </div>
+                            <div className="text">Loading pokemons...</div>
+                        </div>
+                    </div>
+                }
                 <div className="bg-pokemons-cards">
                     {pokemons}
                 </div>
             </main>
         );
+    }
+
+    componentDidUpdate() {
+        const pokemonsLoaded = this.state.pokemonsLoaded;
+        if (!pokemonsLoaded) {
+            this.setState({ pokemonsLoaded: true });
+            document.getElementsByTagName('body')[0].style.overflowY = 'scroll';
+        }
     }
 
     getPokemonList(pokemons) {
