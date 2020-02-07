@@ -1,72 +1,21 @@
 import React from 'react';
+import PokemonCard from './PokemonCard.js';
 
-// css files
 import './css/body.css';
 import './css/types_colors.css';
 import 'bootstrap/dist/css/bootstrap.css';
-// js files
-import { capitalizeWord, getAPIData } from './js/functions.js';
 
 export default class Body extends React.Component
 {
-    constructor(props) {
-        super(props);
-        this.pokemons = [];
-        this.state = {
-            pokemons: this.pokemons
-        }
-
-        this.BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=100&offset=0';
-        this.POKE_IMAGES_URL = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/';
-    }
-
     render () {
+        const pokemons = this.getPokemonList(this.props.pokemons);
         return (
             <main>
                 <div className="bg-pokemons-cards">
-                    {this.state.pokemons}
+                    {pokemons}
                 </div>
             </main>
         );
-    }
-
-    async UNSAFE_componentWillMount() {
-        const pokemons = await this.getPokemons(this.BASE_URL);
-        this.pokemons = pokemons;
-        const html_poke = this.getPokemonList(pokemons);
-        this.setState({ pokemons: html_poke });
-    }
-
-    async getPokemons(url) {
-        let pokemons = [];
-        try {
-            const json = await getAPIData(url);
-            for (let i = 0; i < json.results.length; i++) {
-                const result = json.results[i];
-                const info = await this.getInfoPokemon(result.url);
-                if (info.image != null) pokemons.push(info);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-        return pokemons;
-    }
-
-    async getInfoPokemon(pokemon_url) {
-        try {
-            const json = await getAPIData(pokemon_url);
-            const _id = json.id.toString();
-            const id = _id.length === 1 ? `00${_id}` : _id.length === 2 ? `0${_id}` : _id;
-            let types = json.types.map(type => capitalizeWord(type.type.name));
-            return {
-                name: capitalizeWord(json.name),
-                image: this.POKE_IMAGES_URL + `${id}.png`,
-                id: id,
-                types: types.reverse(),
-            };
-        } catch (error) {
-            console.log(error);
-        }
     }
 
     getPokemonList(pokemons) {
@@ -91,27 +40,4 @@ export default class Body extends React.Component
         }
         return list;
     }
-}
-
-function PokemonCard({ pokemon_info }) {
-    return (
-        <div className="cols col-sm-3">
-            <div className="poke_card">
-                <div className="image">
-                    <img src={pokemon_info.image} alt={pokemon_info.name} /><br/>
-                </div>
-                <div className="information">
-                    <span className="id">N° {pokemon_info.id}</span>
-                    <div className="name">{pokemon_info.name}</div>
-                    <div className="types">
-                        {pokemon_info.types.map(type => 
-                            <div
-                                className={`type-cont ${type.toLowerCase()}`}
-                                key={type} >{type}</div>
-                        )}
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
 }

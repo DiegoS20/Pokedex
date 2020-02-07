@@ -6,23 +6,14 @@ import {
     // Link,
     // useParams
 } from 'react-router-dom';
-import Header from './Header.js';
-import Body from './Body.js';
-// css files
-import './css/main.css';
+import Main from './Main.js';
 
-export default class App extends React.Component
-{
-    render() {
-        return (
-            <Router>
-                <Switch>
-                    <Route exact path="/">
-                        <Header></Header>
-                        <Body></Body>
-                    </Route>
-                </Switch>
-            </Router>
-        );
-    }
+export default function App() {    
+    return (
+        <Router>
+            <Switch>
+                <Route exact path="/" component={Main} />
+            </Switch>
+        </Router>
+    );
 }
