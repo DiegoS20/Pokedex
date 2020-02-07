@@ -78,7 +78,7 @@ export default class Body extends React.Component
             let cols = [];
             for (let j = 0; j < poke_x_row; j++) {
                 const pokemon = _pokemons[j];
-                if (_pokemons.length < poke_x_row && j === poke_x_row) break;
+                if (typeof pokemon === 'undefined') break;
                 cols.push(
                     <PokemonCard
                         key={pokemon.id}
