@@ -15,7 +15,7 @@ export default class Main extends React.Component
             searchedPokemons: []
         }
 
-        this.BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=100&offset=0';
+        this.BASE_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=150&offset=0';
         this.POKE_IMAGES_URL = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/';
     }
 
