@@ -1,8 +1,9 @@
 import React from "react";
-import PokemonCard from "./PokemonCard.js";
+import PokemonCard from "./PokemonCard.jsx";
 
 import "../css/body.css";
 import "../css/types_colors.css";
+import "bootstrap/dist/css/bootstrap.css";
 
 import poke_icon from "../media/images/pokeball_icon.png";
 
@@ -54,6 +55,7 @@ export default class Body extends React.Component {
         cols.push(<PokemonCard key={pokemon.id} pokemon_info={pokemon} />);
       }
       const row = (
+        // Grapping the X pokemon card into a bootstrap row
         <div key={i} className="row">
           {cols}
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import Searcher from "./Searcher.js";
+import Searcher from "./Searcher.jsx";
 
 import "../css/header.css";
 

@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./Header.js";
-import Body from "./Body.js";
+import Header from "./Header.jsx";
+import Body from "./Body.jsx";
 import { capitalizeWord, getAPIData } from "../js/functions.js";
 
 import "../css/main.css";
