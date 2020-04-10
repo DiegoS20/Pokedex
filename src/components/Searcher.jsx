@@ -1,42 +1,42 @@
-import React from 'react';
+import React, { useState } from "react";
+import Classifier from "./Classifier.jsx";
 
-export default class Searcher extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputText: '',
-        }
-    }
+function Searcher(props) {
+  /* States */
+  const [inputText, setInputText] = useState("");
 
-    handleKeyUp(e) {
-        this.timeOut = setTimeout(() => {
-            this.props.onQueryStringChange(this.state.inputText);
-            this.clearTimeOut();
-        }, 100);
-    }
+  /* Global variables */
+  let timeOut;
 
-    render() {
-        return (
-            <div className="searcher">
-                <div className="search-input">
-                    <input
-                        type="text"
-                        placeholder="Write your pokemon name!"
-                        autoFocus
-                        onKeyUp={e => this.handleKeyUp(e)}
-                        onKeyDown={() => this.clearTimeOut()}
-                        onInput={e => {
-                            this.setState({ inputText: e.target.value })
-                        }} />
-                </div>
-            </div>
-        );
-    }
+  function handleKeyUp(e) {
+    timeOut = setTimeout(() => {
+      props.onQueryStringChange(inputText);
+      clearTimeOut();
+    }, 100);
+  }
 
-    clearTimeOut() {
-        if (this.timeOut) {
-            clearTimeout(this.timeOut);
-            delete this.timeOut;
-        }
+  function clearTimeOut() {
+    if (timeOut) {
+      clearTimeout(timeOut);
+      timeOut = null;
     }
+  }
+
+  return (
+    <div className="searcher">
+      <div className="search-input">
+        <input
+          type="text"
+          placeholder="Write your pokemon name!"
+          autoFocus
+          onKeyUp={(e) => handleKeyUp(e)}
+          onKeyDown={clearTimeOut}
+          onInput={(e) => {
+            setInputText(e.target.value);
+          }}
+        />
+      </div>
+    </div>
+  );
 }
+export default Searcher;
