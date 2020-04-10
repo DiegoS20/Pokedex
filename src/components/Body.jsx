@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard.jsx";
 
 import "../css/body.css";
@@ -7,42 +7,21 @@ import "bootstrap/dist/css/bootstrap.css";
 
 import poke_icon from "../media/images/pokeball_icon.png";
 
-export default class Body extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pokemonsLoaded: false,
-    };
-  }
+function Body(props) {
+  /* states */
+  const [pokemonsLoaded, setPokemonsLoaded] = useState(false);
 
-  render() {
-    const pokemons = this.getPokemonList(this.props.pokemons);
-    return (
-      <main>
-        {!this.state.pokemonsLoaded && (
-          <div className="loading-pokemons">
-            <div className="message">
-              <div className="pokeball-icon">
-                <img src={poke_icon} alt="Pokeball loading icon" />
-              </div>
-              <div className="text">Loading pokemons...</div>
-            </div>
-          </div>
-        )}
-        <div className="bg-pokemons-cards">{pokemons}</div>
-      </main>
-    );
-  }
+  // global variables
+  const pokemons = getPokemonList(props.pokemons);
 
-  componentDidUpdate() {
-    const pokemonsLoaded = this.state.pokemonsLoaded;
-    if (!pokemonsLoaded) {
-      this.setState({ pokemonsLoaded: true });
+  useEffect(() => {
+    if (!pokemonsLoaded && pokemons.length > 0) {
+      setPokemonsLoaded(true);
       document.getElementsByTagName("body")[0].style.overflowY = "scroll";
     }
-  }
+  });
 
-  getPokemonList(pokemons) {
+  function getPokemonList(pokemons) {
     let _pokemons = pokemons.slice(),
       list = [];
     const poke_x_row = 4;
@@ -55,7 +34,6 @@ export default class Body extends React.Component {
         cols.push(<PokemonCard key={pokemon.id} pokemon_info={pokemon} />);
       }
       const row = (
-        // Grapping the X pokemon card into a bootstrap row
         <div key={i} className="row">
           {cols}
         </div>
@@ -65,4 +43,49 @@ export default class Body extends React.Component {
     }
     return list;
   }
+
+  return (
+    <main>
+      {!pokemonsLoaded && (
+        <div className="loading-pokemons">
+          <div className="message">
+            <div className="pokeball-icon">
+              <img src={poke_icon} alt="Pokeball loading icon" />
+            </div>
+            <div className="text">Loading pokemons...</div>
+          </div>
+        </div>
+      )}
+      <div className="bg-pokemons-cards">{pokemons}</div>
+    </main>
+  );
 }
+export default Body;
+
+// export default class Body extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       pokemonsLoaded: false,
+//     };
+//   }
+
+//   render() {
+//     const pokemons = this.getPokemonList(this.props.pokemons);
+//     return (
+//       <main>
+//         {!this.state.pokemonsLoaded && (
+//           <div className="loading-pokemons">
+//             <div className="message">
+//               <div className="pokeball-icon">
+//                 <img src={poke_icon} alt="Pokeball loading icon" />
+//               </div>
+//               <div className="text">Loading pokemons...</div>
+//             </div>
+//           </div>
+//         )}
+//         <div className="bg-pokemons-cards">{pokemons}</div>
+//       </main>
+//     );
+//   }
+// }

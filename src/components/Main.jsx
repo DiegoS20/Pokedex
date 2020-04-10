@@ -1,70 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header.jsx";
 import Body from "./Body.jsx";
 import { capitalizeWord, getAPIData } from "../js/functions.js";
 
 import "../css/main.css";
 
-export default class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      allPokemons: [],
-      isSearching: false,
-      searchedPokemons: [],
-    };
+function Main() {
+  /* states */
+  const [allPokemons, setAllPokemons] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchedPokemons, setSearchedPokemons] = useState([]);
 
-    this.BASE_URL = "https://pokeapi.co/api/v2/pokemon/?limit=150&offset=0";
-    this.POKE_IMAGES_URL =
-      "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/";
-  }
+  /* general variables */
+  const pokemonsNumber = 100;
+  const BASE_URL = `https://pokeapi.co/api/v2/pokemon/?limit=${pokemonsNumber}&offset=0`;
+  const POKE_IMAGES_URL =
+    "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/";
 
-  handleQueryStringChange(query) {
+  useEffect(() => {
+    async function getPokemonsAsync(url) {
+      const allPokemons = await getPokemons(url);
+      setAllPokemons(allPokemons);
+    }
+    getPokemonsAsync(BASE_URL);
+  }, []);
+
+  function handleQueryStringChange(query) {
     if (!query) {
-      this.setState({ isSearching: false });
+      setIsSearching(false);
       return;
     }
 
-    const pokemons = this.state.allPokemons;
-    const searchedPokemons = [];
+    const pokemons = allPokemons.slice();
+    const _searchedPokemons = [];
     const query_str = query.toLowerCase();
     pokemons.forEach((pokemon) => {
       const _pokemon = pokemon.name.toLowerCase();
-      if (_pokemon.includes(query_str)) {
-        searchedPokemons.push(pokemon);
+      if (_pokemon.indexOf(query_str) >= 0) {
+        _searchedPokemons.push(pokemon);
       }
     });
-    this.setState({
-      isSearching: true,
-      searchedPokemons,
-    });
-    console.log(searchedPokemons);
+    setIsSearching(true);
+    setSearchedPokemons(_searchedPokemons);
   }
 
-  render() {
-    const { allPokemons, isSearching, searchedPokemons } = this.state;
-    return (
-      <div className="document">
-        <Header
-          onQueryStringChange={(query) => this.handleQueryStringChange(query)}
-        ></Header>
-        <Body pokemons={!isSearching ? allPokemons : searchedPokemons} />
-      </div>
-    );
-  }
-
-  async UNSAFE_componentWillMount() {
-    const allPokemons = await this.getPokemons(this.BASE_URL);
-    this.setState({ allPokemons });
-  }
-
-  async getPokemons(url) {
+  async function getPokemons(url) {
     let pokemons = [];
     try {
       const json = await getAPIData(url);
       for (let i = 0; i < json.results.length; i++) {
         const result = json.results[i];
-        const info = await this.getInfoPokemon(result.url);
+        const info = await getInfoPokemon(result.url);
         if (info.image != null) pokemons.push(info);
       }
     } catch (error) {
@@ -73,7 +59,7 @@ export default class Main extends React.Component {
     return pokemons;
   }
 
-  async getInfoPokemon(pokemon_url) {
+  async function getInfoPokemon(pokemon_url) {
     try {
       const json = await getAPIData(pokemon_url);
       const _id = json.id.toString();
@@ -82,7 +68,7 @@ export default class Main extends React.Component {
       let types = json.types.map((type) => capitalizeWord(type.type.name));
       return {
         name: capitalizeWord(json.name),
-        image: this.POKE_IMAGES_URL + `${id}.png`,
+        image: POKE_IMAGES_URL + `${id}.png`,
         id: id,
         types: types.reverse(),
       };
@@ -90,4 +76,12 @@ export default class Main extends React.Component {
       console.log(error);
     }
   }
+
+  return (
+    <div className="document">
+      <Header onQueryStringChange={handleQueryStringChange}></Header>
+      <Body pokemons={!isSearching ? allPokemons : searchedPokemons} />
+    </div>
+  );
 }
+export default Main;
