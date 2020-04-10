@@ -36,6 +36,7 @@ function Searcher(props) {
           }}
         />
       </div>
+      <Classifier onNewCriteriaAdded={props.onNewCriteriaAdded}></Classifier>
     </div>
   );
 }
