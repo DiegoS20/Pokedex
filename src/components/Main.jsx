@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header.jsx";
 import Body from "./Body.jsx";
 import { capitalizeWord, getAPIData } from "../js/functions.js";
+import { onQueryStringChange } from "../js/contexts";
 
 import "../css/main.css";
 
@@ -79,7 +80,9 @@ function Main() {
 
   return (
     <div className="document">
-      <Header onQueryStringChange={handleQueryStringChange}></Header>
+      <onQueryStringChange.Provider value={handleQueryStringChange}>
+        <Header></Header>
+      </onQueryStringChange.Provider>
       <Body pokemons={!isSearching ? allPokemons : searchedPokemons} />
     </div>
   );

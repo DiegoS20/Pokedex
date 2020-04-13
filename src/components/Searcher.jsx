@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Classifier from "./Classifier.jsx";
+import { onQueryStringChange } from "../js/contexts";
 
 function Searcher(props) {
   /* States */
   const [inputText, setInputText] = useState("");
+
+  /* Contexts */
+  const queryStringChangeFunc = useContext(onQueryStringChange);
 
   /* Global variables */
   let timeOut;
 
   function handleKeyUp(e) {
     timeOut = setTimeout(() => {
-      props.onQueryStringChange(inputText);
+      queryStringChangeFunc(inputText);
       clearTimeOut();
     }, 100);
   }
